@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: projectweb
+spec:
+  selector:
+    matchLabels:
+      app: projectweb
+  template:
+    metadata:
+      labels:
+        app: projectweb
+    spec:
+      containers:
+      - name: projectweb
+        image: aniketdadhe/projectweb:{{ .values.image.tag }}
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
