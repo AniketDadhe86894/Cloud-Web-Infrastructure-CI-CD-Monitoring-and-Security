@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: projectweb
-        image: aniketdadhe/projectweb:{{ .values.image.tag }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         resources:
           limits:
             memory: "128Mi"
