@@ -2,7 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: projectweb
+  labels:
+    app: project-sitef
 spec:
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: projectweb
@@ -13,10 +16,6 @@ spec:
     spec:
       containers:
       - name: projectweb
-        image: aniketdadhe/projectweb
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         ports:
         - containerPort: 80
