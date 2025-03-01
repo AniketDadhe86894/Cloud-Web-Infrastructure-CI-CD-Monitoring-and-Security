@@ -1,15 +1,5 @@
 replicaCount: 1
 
 image:
-<<<<<<< HEAD
-  repository: aniketdadhe/projectweb
-<<<<<<< HEAD
-  tag: "13608835353"
-=======
-  tag: "13608835353"
->>>>>>> 612f0d0 (updated)
-=======
-  repository: "aniketdadhe/projectweb"
-  tag: "v1"
->>>>>>> 809cab3 (updated)
-
+  repository: "aniketdadhe/projectweb"  
+  tag: "13602384278"
