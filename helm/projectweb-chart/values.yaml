@@ -2,5 +2,9 @@ replicaCount: 1
 
 image:
   repository: aniketdadhe/projectweb
+<<<<<<< HEAD
   tag: "13608487606"
+=======
+  tag: "new-tag"
+>>>>>>> 612f0d0 (updated)
 
