@@ -3,8 +3,8 @@ replicaCount: 1
 image:
   repository: aniketdadhe/projectweb
 <<<<<<< HEAD
-  tag: "13608487606"
+  tag: "13608835353"
 =======
-  tag: "new-tag"
+  tag: "13608835353"
 >>>>>>> 612f0d0 (updated)
 
