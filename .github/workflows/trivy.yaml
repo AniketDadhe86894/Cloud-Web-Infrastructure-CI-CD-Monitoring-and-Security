@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}  
       - name: Debug Environment Variables
         run: |
           echo "Checking if secrets are available..."
@@ -62,7 +64,7 @@ jobs:
           trivy fs --exit-code 1 --severity HIGH,CRITICAL --format table . > trivy-fs-results.txt
       - name: Run Trivy Image Scan (Container Image Vulnerabilities)
         run: |
-          trivy image --exit-code 1 --severity HIGH,CRITICAL --format table -o trivy-image-results.txt ${{ secrets.DOCKERHUB_USERNAME }}/project-sitef:${{ github.run_id }} || true
+          trivy image --exit-code 1 --severity HIGH,CRITICAL --format table -o trivy-image-results.txt ${{ secrets.DOCKERHUB_USERNAME }}/projectweb:${{ github.run_id }} || true
       - name: Upload Trivy FS Scan Results
         uses: actions/upload-artifact@v4
         with:
@@ -86,22 +88,20 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}  
       - name: Configure Git
         run: |
           git config --global user.email "aniketdadhe2710@gmail.com"
           git config --global user.name "AniketDadhe86894"
       - name: Stash changes if any
         run: |
-          git diff --quiet || git stash -u  # Stash changes if there are unstaged changes
-      - name: Pull latest changes from remote
-        run: |
-          git pull origin main --rebase  # Pull latest changes and rebase
+          git diff --quiet || (git stash -u && git pull origin main --rebase && git stash pop)
       - name: Update Helm Chart Tag
         run: |
-          sed -i "s/tag:.*/tag: "${{ github.run_id }}"/" helm/projectweb-chart/values.yaml
+          sed -i "s/tag:.*/tag: \"${{ github.run_id }}\"/" helm/projectweb-chart/values.yaml
       - name: Commit and Push Changes
         run: |
           git add helm/projectweb-chart/values.yaml
-          git commit -m "Update tag in Helm chart"
-          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/AniketDadhe86894/Cloud-Web-Infrastructure-CI-CD-Monitoring-and-Security.git
+          git commit -m "Update tag in Helm chart" || echo "No changes to commit"
           git push origin main
