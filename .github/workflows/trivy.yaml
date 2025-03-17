@@ -38,7 +38,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/project-sitef:${{ github.run_id }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/projectweb:${{ github.run_id }}
           platforms: linux/amd64,linux/arm64
 
   trivy-security-scan:
