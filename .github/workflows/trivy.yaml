@@ -98,10 +98,10 @@ jobs:
           git pull origin main --rebase  # Pull latest changes and rebase
       - name: Update Helm Chart Tag
         run: |
-          sed -i 's/tag: .*/tag: "${{ github.run_id }}"/' helm/projectweb-chart/values.yaml
+          sed -i "s/tag:.*/tag: \"${{ github.run_id }}\"/" helm/projectweb-chart/values.yaml
       - name: Commit and Push Changes
         run: |
           git add helm/projectweb-chart/values.yaml
           git commit -m "Update tag in Helm chart"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/AniketDadhe86894/projectweb.git
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/AniketDadhe86894/Cloud-Web-Infrastructure-CI-CD-Monitoring-and-Security.git
           git push origin main
