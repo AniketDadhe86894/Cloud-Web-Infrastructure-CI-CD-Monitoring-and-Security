@@ -2,4 +2,4 @@ replicaCount: 1
 
 image:
   repository: "aniketdadhe/projectweb"  
-  tag: "13903258941"
+  tag: "13903282777"
