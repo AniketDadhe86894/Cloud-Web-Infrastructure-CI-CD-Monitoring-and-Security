@@ -13,19 +13,19 @@ jobs:
   push:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup docker build
+      - name: Setup Docker Build
         uses: docker/setup-buildx-action@v1
 
-      - name: Login do DockerHub
+      - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -38,17 +38,26 @@ jobs:
     runs-on: ubuntu-latest
     needs: push
     steps:
-      - name: checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Update tag
+      - name: Update Helm Chart Tag
         run: |
-          sed -i 's/tag: .*/tag: "${{github.run_id}}"/' helm/projectweb-chart/values.yaml
+          set -e  # Stop execution if any command fails
+          sed -i "s|tag: .*|tag: \"${{ github.run_id }}\"|" helm/projectweb-chart/values.yaml
 
-      - name: Commit and push changes
+      - name: Commit and Push Changes
         run: |
+          set -e  # Stop execution if any command fails
           git config --global user.email "aniketdadhe2710@gmail.com"
           git config --global user.name "AniketDadhe86894"
           git add helm/projectweb-chart/values.yaml
           git commit -m "Update tag in Helm chart"
-          git push
+
+        
+          git pull origin main --rebase
+          
+          
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/AniketDadhe86894/Cloud-Web-Infrastructure-CI-CD-Monitoring-and-Security.git
+          
+          git push origin main
